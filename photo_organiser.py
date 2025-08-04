@@ -26,11 +26,12 @@ def get_image_date(image_path):
 
 def infer_date_from_path(path):
     patterns = [
-        r"(\d{4})[/\\](\d{1,2})",
-        r"(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*",
-        r"(\d{2})/(\d{2})/(\d{4})",
-        r"(\d{4})"
+        r"(\d{4})[/\\](\d{1,2})",  # Year/Month
+        r"(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*",  # Month names
+        r"(\d{2})/(\d{2})/(\d{4})",  # DD/MM/YYYY
+        r"(?<!\d)(?:-|_|\s)?(19[8-9]\d|20[0-2]\d)(?:-|_|\s)?(?!\d)"  # Standalone years from 1988 to 2025
     ]
+
     parts = path.split(os.sep)
     for part in parts:
         for pattern in patterns:
@@ -43,10 +44,12 @@ def infer_date_from_path(path):
                         day, month, year = map(int, match.groups())
                         return datetime(year, month, day)
                     elif len(match.groups()) == 1:
-                        return datetime(int(match.group(1)), 1, 1)
-                    elif match.group(1):
+                        year = int(match.group(1))
+                        if 1988 <= year <= 2025:
+                            return datetime(year, 1, 1)
+                    elif match.group(1):  # e.g. "August"
                         return datetime(2000, month_str_to_int(match.group(0)), 1)
-                except:
+                except Exception:
                     continue
     return None
 

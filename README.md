@@ -65,7 +65,7 @@ To rebuild or customise, run:
 pip install -r requirements.txt
 pyinstaller --onefile photo_organiser_gui.py
 or
-python -m PyInstaller --onefile --name PhotoOrganiser photo_organiser.py  
+python3.10 -m PyInstaller --onefile --name PhotoOrganiser photo_organiser.py  
 ```
 
 ---

@@ -64,6 +64,8 @@ To rebuild or customise, run:
 ```bash
 pip install -r requirements.txt
 pyinstaller --onefile photo_organiser_gui.py
+or
+python -m PyInstaller --onefile --name PhotoOrganiser photo_organiser.py  
 ```
 
 ---
